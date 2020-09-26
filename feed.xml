@@ -1,4 +1,147 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-07-19T17:04:16+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">What is Emacs?</title><link href="/jekyll/update/2019/12/28/what-is-emacs.html" rel="alternate" type="text/html" title="What is Emacs?" /><published>2019-12-28T14:09:03+07:00</published><updated>2019-12-28T14:09:03+07:00</updated><id>/jekyll/update/2019/12/28/what-is-emacs</id><content type="html" xml:base="/jekyll/update/2019/12/28/what-is-emacs.html">&lt;h1 id=&quot;introduce-emacs&quot;&gt;Introduce Emacs&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-09-26T23:17:53+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">How to install High Availability Kubernetes Cluster?</title><link href="/jekyll/update/2020/09/26/install-k8s-3-master.html" rel="alternate" type="text/html" title="How to install High Availability Kubernetes Cluster?" /><published>2020-09-26T14:09:03+07:00</published><updated>2020-09-26T14:09:03+07:00</updated><id>/jekyll/update/2020/09/26/install-k8s-3-master</id><content type="html" xml:base="/jekyll/update/2020/09/26/install-k8s-3-master.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone https://github.com/holosix/setup-high-available-k8s.git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant up
+
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; master01&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--control-plane-endpoint&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;k8s-master01:8443&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+               &lt;span class=&quot;nt&quot;&gt;--upload-certs&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;10.0.0.0/16&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+               &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;192.168.0.101&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; master02&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; &amp;lt;generate_key_by_kubeadm_init&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; &amp;lt;generate_key_by_kubeadm_init&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--control-plane&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--certificate-key&lt;/span&gt; &amp;lt;generate_key_by_kubeadm_init&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; node01&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; &amp;lt;generate_key_by_kubeadm_init&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; &amp;lt;generate_key_by_kubeadm_init&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;introduce-kubernetes&quot;&gt;Introduce Kubernetes&lt;/h1&gt;
+
+&lt;p&gt;This post intend to introduce Emacs Editor and comparing the differences of Emacs and VIM. Why VIM and Emacs both have great impact to developer coding lifestyle.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;./k8s-arch.jpg&quot; alt=&quot;k8s-arch&quot; /&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;how-to-install-3-master-node-k8s&quot;&gt;How to install 3 master node k8s&lt;/h1&gt;
+&lt;p&gt;Pull my source code&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone https://github.com/holosix/setup-high-available-k8s.git&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In this source code, I set up with Vagrant with Virtualbox provider for easy to create simulator server.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant up&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If asking any password, you can enter to skip all, and wait until it install required packages completely.
+After installing 3 node completely (2 master, 1 worker), open 3 seperate terminal and navigate to each of them by below command&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#=&amp;gt; remember to navigate the vagrant source code directory before executing below.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant ssh master01
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant ssh master02
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant ssh node01&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In master01, init your first master node&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm init &lt;span class=&quot;nt&quot;&gt;--control-plane-endpoint&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;k8s-master01:8443&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+               &lt;span class=&quot;nt&quot;&gt;--upload-certs&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--pod-network-cidr&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;10.0.0.0/16&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+               &lt;span class=&quot;nt&quot;&gt;--apiserver-advertise-address&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;192.168.0.101&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After the complete installation, you will see like below, with two command join. One for another master node, and the other for worker node.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+  &lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+  &lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run &lt;span class=&quot;s2&quot;&gt;&quot;kubectl apply -f [podnetwork].yaml&quot;&lt;/span&gt; with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;any number of the control-plane node running the following &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;on each as root:
+
+  kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; avu6o7.1li6l5py7t85s280 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--control-plane&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--certificate-key&lt;/span&gt; 32dc3334dc21351e70bdbe7e5fa62e45fc3ea1a3f43ff851a3dfea0405cdcb2f
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;two hours&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; If necessary, you can use
+&lt;span class=&quot;s2&quot;&gt;&quot;kubeadm init phase upload-certs --upload-certs&quot;&lt;/span&gt; to reload certs afterward.
+
+Then you can &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;any number of worker nodes by running the following on each as root:
+
+kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; avu6o7.1li6l5py7t85s280 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;With master02 node, type below example command:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; avu6o7.1li6l5py7t85s280 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--control-plane&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--certificate-key&lt;/span&gt; 32dc3334dc21351e70bdbe7e5fa62e45fc3ea1a3f43ff851a3dfea0405cdcb2f&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;With worker node01, type below example command:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;k8s-master01:8443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; avu6o7.1li6l5py7t85s280 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After joining all nodes successfully, check below command&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@k8s-master01 vagrant]# kubectl get node &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; wide
+NAME           STATUS     ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME
+k8s-master01   Ready      master   3m3s    v1.19.2   192.168.0.101   &amp;lt;none&amp;gt;        CentOS Linux 7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Core&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13
+k8s-master02   Ready      master   2m14s   v1.19.2   192.168.0.102   &amp;lt;none&amp;gt;        CentOS Linux 7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Core&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13
+k8s-node01     Ready      &amp;lt;none&amp;gt;   37s     v1.19.2   192.168.0.104   &amp;lt;none&amp;gt;        CentOS Linux 7 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Core&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then apply CNI Calico for your Kubernetes cluster, with in master01 node:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; calico.yaml&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Final result&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@k8s-master01 vagrant]# kubectl get pod &lt;span class=&quot;nt&quot;&gt;--all-namespaces&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; wide
+NAMESPACE     NAME                                      READY   STATUS              RESTARTS   AGE   IP              NODE           NOMINATED NODE   READINESS GATES
+kube-system   calico-kube-controllers-bcc6f659f-zswrn   1/1     Running             0          10m   10.0.32.128     k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   calico-node-hmzts                         1/1     Running             5          10m   192.168.0.104   k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   calico-node-mbw8v                         1/1     Running             0          10m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   calico-node-pg45x                         1/1     Running             0          10m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   coredns-f9fd979d6-4d52m                   1/1     Running             0          12m   10.0.32.129     k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   coredns-f9fd979d6-djxhv                   1/1     Running             0          12m   10.0.32.130     k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   etcd-k8s-master01                         1/1     Running             0          12m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   etcd-k8s-master02                         1/1     Running             0          12m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-apiserver-k8s-master01               1/1     Running             0          12m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-apiserver-k8s-master02               1/1     Running             0          12m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-controller-manager-k8s-master01      1/1     Running             1          12m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-controller-manager-k8s-master02      1/1     Running             0          12m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-proxy-6djf6                          1/1     Running             0          10m   192.168.0.104   k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-proxy-8w829                          1/1     Running             0          12m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-proxy-btchg                          1/1     Running             0          12m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-scheduler-k8s-master01               1/1     Running             1          12m   192.168.0.101   k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system   kube-scheduler-k8s-master02               1/1     Running             0          12m   192.168.0.102   k8s-master02   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;summing-up&quot;&gt;Summing up&lt;/h1&gt;
+
+&lt;p&gt;In order to play well with Emacs, you need to prepare some stuff before diving into detail.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Guide to install Emacs on Linux (in this post we guide how to install on Linux only)&lt;/li&gt;
+  &lt;li&gt;Emacs Lisp Language&lt;/li&gt;
+  &lt;li&gt;Common plugins and tools for making things easier: helm, swoop, buffer, term, etc.&lt;/li&gt;
+  &lt;li&gt;Basic key-binding practices&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more information, check out the references:
+&lt;a href=&quot;http://ergoemacs.org/emacs/emacs.html&quot;&gt;Ergo Emacs&lt;/a&gt;
+&lt;a href=&quot;https://sachachua.com/blog/emacs/&quot;&gt;Sacha Chua&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">TL;DR $ git clone https://github.com/holosix/setup-high-available-k8s.git $ vagrant up</summary></entry><entry><title type="html">What is Emacs?</title><link href="/jekyll/update/2019/12/28/what-is-emacs.html" rel="alternate" type="text/html" title="What is Emacs?" /><published>2019-12-28T14:09:03+07:00</published><updated>2019-12-28T14:09:03+07:00</updated><id>/jekyll/update/2019/12/28/what-is-emacs</id><content type="html" xml:base="/jekyll/update/2019/12/28/what-is-emacs.html">&lt;h1 id=&quot;introduce-emacs&quot;&gt;Introduce Emacs&lt;/h1&gt;
 
 &lt;p&gt;This post intend to introduce Emacs Editor and comparing the differences of Emacs and VIM. Why VIM and Emacs both have great impact to developer coding lifestyle.&lt;/p&gt;
 

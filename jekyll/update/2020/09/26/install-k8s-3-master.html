@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to install High Availability Kubernetes Cluster? | HoloSix</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="How to install High Availability Kubernetes Cluster?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="TL;DR $ git clone https://github.com/holosix/setup-high-available-k8s.git $ vagrant up" />
+<meta property="og:description" content="TL;DR $ git clone https://github.com/holosix/setup-high-available-k8s.git $ vagrant up" />
+<link rel="canonical" href="/jekyll/update/2020/09/26/install-k8s-3-master.html" />
+<meta property="og:url" content="/jekyll/update/2020/09/26/install-k8s-3-master.html" />
+<meta property="og:site_name" content="HoloSix" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-26T14:09:03+07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll/update/2020/09/26/install-k8s-3-master.html"},"url":"/jekyll/update/2020/09/26/install-k8s-3-master.html","description":"TL;DR $ git clone https://github.com/holosix/setup-high-available-k8s.git $ vagrant up","headline":"How to install High Availability Kubernetes Cluster?","dateModified":"2020-09-26T14:09:03+07:00","datePublished":"2020-09-26T14:09:03+07:00","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="HoloSix" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">HoloSix</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to install High Availability Kubernetes Cluster?</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-09-26T14:09:03+07:00" itemprop="datePublished">Sep 26, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="tldr">TL;DR</h1>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/holosix/setup-high-available-k8s.git
+<span class="nv">$ </span>vagrant up
+
+<span class="c">#=&gt; master01</span>
+<span class="nv">$ </span>kubeadm init <span class="nt">--control-plane-endpoint</span> <span class="s2">"k8s-master01:8443"</span> <span class="se">\</span>
+               <span class="nt">--upload-certs</span> <span class="nt">--pod-network-cidr</span> <span class="s2">"10.0.0.0/16"</span> <span class="se">\</span>
+               <span class="nt">--apiserver-advertise-address</span> <span class="s2">"192.168.0.101"</span>
+<span class="nv">$ </span><span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+<span class="nv">$ </span><span class="nb">sudo cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+<span class="nv">$ </span><span class="nb">sudo chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
+
+<span class="c">#=&gt; master02</span>
+<span class="nv">$ </span>kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> &lt;generate_key_by_kubeadm_init&gt; <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> &lt;generate_key_by_kubeadm_init&gt; <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> &lt;generate_key_by_kubeadm_init&gt;
+
+<span class="c">#=&gt; node01</span>
+<span class="nv">$ </span>kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> &lt;generate_key_by_kubeadm_init&gt; <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> &lt;generate_key_by_kubeadm_init&gt;</code></pre></figure>
+
+<h1 id="introduce-kubernetes">Introduce Kubernetes</h1>
+
+<p>This post intend to introduce Emacs Editor and comparing the differences of Emacs and VIM. Why VIM and Emacs both have great impact to developer coding lifestyle.</p>
+
+<p><img src="./k8s-arch.jpg" alt="k8s-arch" /></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+
+<h1 id="how-to-install-3-master-node-k8s">How to install 3 master node k8s</h1>
+<p>Pull my source code</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/holosix/setup-high-available-k8s.git</code></pre></figure>
+
+<p>In this source code, I set up with Vagrant with Virtualbox provider for easy to create simulator server.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>vagrant up</code></pre></figure>
+
+<p>If asking any password, you can enter to skip all, and wait until it install required packages completely.
+After installing 3 node completely (2 master, 1 worker), open 3 seperate terminal and navigate to each of them by below command</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#=&gt; remember to navigate the vagrant source code directory before executing below.</span>
+<span class="nv">$ </span>vagrant ssh master01
+<span class="nv">$ </span>vagrant ssh master02
+<span class="nv">$ </span>vagrant ssh node01</code></pre></figure>
+
+<p>In master01, init your first master node</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>kubeadm init <span class="nt">--control-plane-endpoint</span> <span class="s2">"k8s-master01:8443"</span> <span class="se">\</span>
+               <span class="nt">--upload-certs</span> <span class="nt">--pod-network-cidr</span> <span class="s2">"10.0.0.0/16"</span> <span class="se">\</span>
+               <span class="nt">--apiserver-advertise-address</span> <span class="s2">"192.168.0.101"</span></code></pre></figure>
+
+<p>After the complete installation, you will see like below, with two command join. One for another master node, and the other for worker node.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+  <span class="nb">sudo cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+  <span class="nb">sudo chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run <span class="s2">"kubectl apply -f [podnetwork].yaml"</span> with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now <span class="nb">join </span>any number of the control-plane node running the following <span class="nb">command </span>on each as root:
+
+  kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> avu6o7.1li6l5py7t85s280 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> 32dc3334dc21351e70bdbe7e5fa62e45fc3ea1a3f43ff851a3dfea0405cdcb2f
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted <span class="k">in </span>two hours<span class="p">;</span> If necessary, you can use
+<span class="s2">"kubeadm init phase upload-certs --upload-certs"</span> to reload certs afterward.
+
+Then you can <span class="nb">join </span>any number of worker nodes by running the following on each as root:
+
+kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> avu6o7.1li6l5py7t85s280 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a</code></pre></figure>
+
+<p>With master02 node, type below example command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> avu6o7.1li6l5py7t85s280 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> 32dc3334dc21351e70bdbe7e5fa62e45fc3ea1a3f43ff851a3dfea0405cdcb2f</code></pre></figure>
+
+<p>With worker node01, type below example command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>kubeadm <span class="nb">join </span>k8s-master01:8443 <span class="nt">--token</span> avu6o7.1li6l5py7t85s280 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f655a2f78d8d6042313147a858d7994ee0ae0141e591b553d8436b35e8c4f09a</code></pre></figure>
+
+<p>After joining all nodes successfully, check below command</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[</span>root@k8s-master01 vagrant]# kubectl get node <span class="nt">-o</span> wide
+NAME           STATUS     ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME
+k8s-master01   Ready      master   3m3s    v1.19.2   192.168.0.101   &lt;none&gt;        CentOS Linux 7 <span class="o">(</span>Core<span class="o">)</span>   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13
+k8s-master02   Ready      master   2m14s   v1.19.2   192.168.0.102   &lt;none&gt;        CentOS Linux 7 <span class="o">(</span>Core<span class="o">)</span>   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13
+k8s-node01     Ready      &lt;none&gt;   37s     v1.19.2   192.168.0.104   &lt;none&gt;        CentOS Linux 7 <span class="o">(</span>Core<span class="o">)</span>   3.10.0-1127.18.2.el7.x86_64   docker://19.3.13</code></pre></figure>
+
+<p>Then apply CNI Calico for your Kubernetes cluster, with in master01 node:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> calico.yaml</code></pre></figure>
+
+<p>Final result</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[</span>root@k8s-master01 vagrant]# kubectl get pod <span class="nt">--all-namespaces</span> <span class="nt">-o</span> wide
+NAMESPACE     NAME                                      READY   STATUS              RESTARTS   AGE   IP              NODE           NOMINATED NODE   READINESS GATES
+kube-system   calico-kube-controllers-bcc6f659f-zswrn   1/1     Running             0          10m   10.0.32.128     k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system   calico-node-hmzts                         1/1     Running             5          10m   192.168.0.104   k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system   calico-node-mbw8v                         1/1     Running             0          10m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   calico-node-pg45x                         1/1     Running             0          10m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;
+kube-system   coredns-f9fd979d6-4d52m                   1/1     Running             0          12m   10.0.32.129     k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   coredns-f9fd979d6-djxhv                   1/1     Running             0          12m   10.0.32.130     k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system   etcd-k8s-master01                         1/1     Running             0          12m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   etcd-k8s-master02                         1/1     Running             0          12m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-apiserver-k8s-master01               1/1     Running             0          12m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-apiserver-k8s-master02               1/1     Running             0          12m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-controller-manager-k8s-master01      1/1     Running             1          12m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-controller-manager-k8s-master02      1/1     Running             0          12m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-proxy-6djf6                          1/1     Running             0          10m   192.168.0.104   k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system   kube-proxy-8w829                          1/1     Running             0          12m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-proxy-btchg                          1/1     Running             0          12m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-scheduler-k8s-master01               1/1     Running             1          12m   192.168.0.101   k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system   kube-scheduler-k8s-master02               1/1     Running             0          12m   192.168.0.102   k8s-master02   &lt;none&gt;           &lt;none&gt;</code></pre></figure>
+
+<h1 id="summing-up">Summing up</h1>
+
+<p>In order to play well with Emacs, you need to prepare some stuff before diving into detail.</p>
+<ul>
+  <li>Guide to install Emacs on Linux (in this post we guide how to install on Linux only)</li>
+  <li>Emacs Lisp Language</li>
+  <li>Common plugins and tools for making things easier: helm, swoop, buffer, term, etc.</li>
+  <li>Basic key-binding practices</li>
+</ul>
+
+<p>For more information, check out the references:
+<a href="http://ergoemacs.org/emacs/emacs.html">Ergo Emacs</a>
+<a href="https://sachachua.com/blog/emacs/">Sacha Chua</a></p>
+
+
+  </div><a class="u-url" href="/jekyll/update/2020/09/26/install-k8s-3-master.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">HoloSix</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">HoloSix</li><li><a class="u-email" href="mailto:vinh.trieutrang@gmail.com">vinh.trieutrang@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/holosix"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">holosix</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
