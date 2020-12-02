@@ -3,17 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>HoloSix | Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</title>
+<title>Configure your Kubernetes cluster | HoloSix</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="HoloSix" />
+<meta property="og:title" content="Configure your Kubernetes cluster" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
-<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
-<link rel="canonical" href="/" />
-<meta property="og:url" content="/" />
+<meta name="description" content="TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE" />
+<meta property="og:description" content="TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE" />
+<link rel="canonical" href="/jekyll/update/2020/09/28/k8s-config.html" />
+<meta property="og:url" content="/jekyll/update/2020/09/28/k8s-config.html" />
 <meta property="og:site_name" content="HoloSix" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-28T14:09:03+07:00" />
 <script type="application/ld+json">
-{"headline":"HoloSix","url":"/","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@type":"WebSite","name":"HoloSix","@context":"https://schema.org"}</script>
+{"headline":"Configure your Kubernetes cluster","dateModified":"2020-09-28T14:09:03+07:00","datePublished":"2020-09-28T14:09:03+07:00","url":"/jekyll/update/2020/09/28/k8s-config.html","description":"TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE","mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll/update/2020/09/28/k8s-config.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="HoloSix" /></head>
 <body><header class="site-header" role="banner">
@@ -33,36 +35,40 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
-<h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Sep 28, 2020</span>
-        <h3>
-          <a class="post-link" href="/jekyll/update/2020/09/28/k8s-config.html">
-            Configure your Kubernetes cluster
-          </a>
-        </h3></li><li><span class="post-meta">Sep 28, 2020</span>
-        <h3>
-          <a class="post-link" href="/jekyll/update/2020/09/28/privacyidea.html">
-            How to install privacyidea
-          </a>
-        </h3></li><li><span class="post-meta">Sep 26, 2020</span>
-        <h3>
-          <a class="post-link" href="/jekyll/update/2020/09/26/install-k8s-3-master.html">
-            How to install High Availability Kubernetes Cluster?
-          </a>
-        </h3></li><li><span class="post-meta">Dec 28, 2019</span>
-        <h3>
-          <a class="post-link" href="/jekyll/update/2019/12/28/what-is-emacs.html">
-            What is Emacs?
-          </a>
-        </h3></li><li><span class="post-meta">Sep 28, 2019</span>
-        <h3>
-          <a class="post-link" href="/jekyll/update/2019/09/28/welcome-to-jekyll.html">
-            Welcome to Jekyll!
-          </a>
-        </h3></li></ul>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p></div>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Configure your Kubernetes cluster</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-09-28T14:09:03+07:00" itemprop="datePublished">Sep 28, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="tldr">TL;DR</h1>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: <span class="nb">true
+    </span>server: https://your_k8s_uri
+  name: k8s_cluster
+contexts:
+- context:
+    cluster: k8s_cluster
+    user: k8s_user
+  name: k8s_cluster
+current-context: <span class="s2">"k8s_cluster"</span>
+kind: Config
+preferences: <span class="o">{}</span>
+<span class="nb">users</span>:
+- name: k8s_user
+  user:
+    token: TOKEN_CODE</code></pre></figure>
+
+
+  </div><a class="u-url" href="/jekyll/update/2020/09/28/k8s-config.html" hidden></a>
+</article>
 
       </div>
     </main><footer class="site-footer h-card">

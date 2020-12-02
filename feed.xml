@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-10-05T16:58:04+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">How to install privacyidea</title><link href="/jekyll/update/2020/09/28/privacyidea.html" rel="alternate" type="text/html" title="How to install privacyidea" /><published>2020-09-28T14:09:03+07:00</published><updated>2020-09-28T14:09:03+07:00</updated><id>/jekyll/update/2020/09/28/privacyidea</id><content type="html" xml:base="/jekyll/update/2020/09/28/privacyidea.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-12-02T21:55:10+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">How to install privacyidea</title><link href="/jekyll/update/2020/09/28/privacyidea.html" rel="alternate" type="text/html" title="How to install privacyidea" /><published>2020-09-28T14:09:03+07:00</published><updated>2020-09-28T14:09:03+07:00</updated><id>/jekyll/update/2020/09/28/privacyidea</id><content type="html" xml:base="/jekyll/update/2020/09/28/privacyidea.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;### Install server&lt;/span&gt;
 docker volume create &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; privacyidea_config
@@ -13,7 +13,7 @@ docker run &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 5000:80 &lt;span cla
        &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /data/privacyidea_data:/etc/mydata &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
        &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PRIVACYIDEA_ADMIN_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
        &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PRIVACYIDEA_ADMIN_PASS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;your_password &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       pasientskyhosting/ps-privacyidea
+       vinhtrieutrang/privacyidea:latest
 
 &lt;span class=&quot;c&quot;&gt;### Install client&lt;/span&gt;
 wget https://files.pythonhosted.org/packages/5e/64/7ee0b5e7b68b4f7c70ce3e2945d86bfcb1579d042e41d4f64260b72b03d5/privacyideaadm-2.15.1.tar.gz
@@ -48,7 +48,26 @@ privacyidea-authorizedkeys root&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;For more information, check out the references:
 &lt;a href=&quot;http://ergoemacs.org/emacs/emacs.html&quot;&gt;Ergo Emacs&lt;/a&gt;
-&lt;a href=&quot;https://sachachua.com/blog/emacs/&quot;&gt;Sacha Chua&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">TL;DR ### Install server docker volume create --name privacyidea_config docker volume create --name privacyidea_log docker volume create --name privacyidea_data docker volume create --name privacyidea_mysql_data docker run -p 5000:80 --name privacyidea --restart=always -d \ -v privacyidea_config:/etc/privacyidea \ -v privacyidea_log:/var/log/privacyidea \ -v privacyidea_data:/var/lib/privacyidea \ -v privacyidea_mysql_data:/var/lib/mysql \ -v /data/privacyidea_data:/etc/mydata \ -e PRIVACYIDEA_ADMIN_USER=admin \ -e PRIVACYIDEA_ADMIN_PASS=your_password \ pasientskyhosting/ps-privacyidea</summary></entry><entry><title type="html">How to install High Availability Kubernetes Cluster?</title><link href="/jekyll/update/2020/09/26/install-k8s-3-master.html" rel="alternate" type="text/html" title="How to install High Availability Kubernetes Cluster?" /><published>2020-09-26T14:09:03+07:00</published><updated>2020-09-26T14:09:03+07:00</updated><id>/jekyll/update/2020/09/26/install-k8s-3-master</id><content type="html" xml:base="/jekyll/update/2020/09/26/install-k8s-3-master.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+&lt;a href=&quot;https://sachachua.com/blog/emacs/&quot;&gt;Sacha Chua&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">TL;DR ### Install server docker volume create --name privacyidea_config docker volume create --name privacyidea_log docker volume create --name privacyidea_data docker volume create --name privacyidea_mysql_data docker run -p 5000:80 --name privacyidea --restart=always -d \ -v privacyidea_config:/etc/privacyidea \ -v privacyidea_log:/var/log/privacyidea \ -v privacyidea_data:/var/lib/privacyidea \ -v privacyidea_mysql_data:/var/lib/mysql \ -v /data/privacyidea_data:/etc/mydata \ -e PRIVACYIDEA_ADMIN_USER=admin \ -e PRIVACYIDEA_ADMIN_PASS=your_password \ vinhtrieutrang/privacyidea:latest</summary></entry><entry><title type="html">Configure your Kubernetes cluster</title><link href="/jekyll/update/2020/09/28/k8s-config.html" rel="alternate" type="text/html" title="Configure your Kubernetes cluster" /><published>2020-09-28T14:09:03+07:00</published><updated>2020-09-28T14:09:03+07:00</updated><id>/jekyll/update/2020/09/28/k8s-config</id><content type="html" xml:base="/jekyll/update/2020/09/28/k8s-config.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: &lt;span class=&quot;nb&quot;&gt;true
+    &lt;/span&gt;server: https://your_k8s_uri
+  name: k8s_cluster
+contexts:
+- context:
+    cluster: k8s_cluster
+    user: k8s_user
+  name: k8s_cluster
+current-context: &lt;span class=&quot;s2&quot;&gt;&quot;k8s_cluster&quot;&lt;/span&gt;
+kind: Config
+preferences: &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;:
+- name: k8s_user
+  user:
+    token: TOKEN_CODE&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name></name></author><summary type="html">TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE</summary></entry><entry><title type="html">How to install High Availability Kubernetes Cluster?</title><link href="/jekyll/update/2020/09/26/install-k8s-3-master.html" rel="alternate" type="text/html" title="How to install High Availability Kubernetes Cluster?" /><published>2020-09-26T14:09:03+07:00</published><updated>2020-09-26T14:09:03+07:00</updated><id>/jekyll/update/2020/09/26/install-k8s-3-master</id><content type="html" xml:base="/jekyll/update/2020/09/26/install-k8s-3-master.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone https://github.com/holosix/setup-high-available-k8s.git
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vagrant up
