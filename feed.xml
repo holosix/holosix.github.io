@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-12-02T21:57:03+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Configure your Kubernetes cluster</title><link href="/jekyll/update/2020/12/02/k8s-config.html" rel="alternate" type="text/html" title="Configure your Kubernetes cluster" /><published>2020-12-02T14:09:03+07:00</published><updated>2020-12-02T14:09:03+07:00</updated><id>/jekyll/update/2020/12/02/k8s-config</id><content type="html" xml:base="/jekyll/update/2020/12/02/k8s-config.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-12-02T22:40:41+07:00</updated><id>/feed.xml</id><title type="html">HoloSix</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Configure your Kubernetes cluster</title><link href="/jekyll/update/2020/12/02/k8s-config.html" rel="alternate" type="text/html" title="Configure your Kubernetes cluster" /><published>2020-12-02T14:09:03+07:00</published><updated>2020-12-02T14:09:03+07:00</updated><id>/jekyll/update/2020/12/02/k8s-config</id><content type="html" xml:base="/jekyll/update/2020/12/02/k8s-config.html">&lt;p&gt;Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below.&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-configuration-template&quot;&gt;Kubernetes Configuration Template&lt;/h1&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;apiVersion: v1
 clusters:
@@ -17,7 +19,40 @@ preferences: &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;:
 - name: k8s_user
   user:
-    token: TOKEN_CODE&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name></name></author><summary type="html">TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE</summary></entry><entry><title type="html">How to install privacyidea</title><link href="/jekyll/update/2020/09/28/privacyidea.html" rel="alternate" type="text/html" title="How to install privacyidea" /><published>2020-09-28T14:09:03+07:00</published><updated>2020-09-28T14:09:03+07:00</updated><id>/jekyll/update/2020/09/28/privacyidea</id><content type="html" xml:base="/jekyll/update/2020/09/28/privacyidea.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
+    token: TOKEN_CODE&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Save it in somewhere. And do not forget to add below configuration path&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;KUBECONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/your_path/k8s_cluster.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Reload your Terminal, from now you can check it works by typing sample command:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl get pod &lt;span class=&quot;nt&quot;&gt;--all-namespaces&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;To simplify your command and repeat tediously, you can use my toolbox &lt;a href=&quot;https://github.com/holosix/shuriken&quot; target=&quot;_blank&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;k8s-get-pod
+NAMESPACE       NAME                                                    READY   STATUS             RESTARTS   AGE     IP             NODE           NOMINATED NODE   READINESS GATES
+default         phpmyadmin-74698fb4cf-jdk6s                             1/1     Running            0          2d6h    10.0.85.248    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     calico-kube-controllers-bcc6f659f-9q6zb                 1/1     Running            0          19d     10.0.85.194    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     calico-node-nml87                                       1/1     Running            0          19d     192.168.0.1    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     calico-node-xwjst                                       1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     coredns-f9fd979d6-99rsp                                 1/1     Running            0          19d     10.0.85.193    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     coredns-f9fd979d6-jfnlg                                 1/1     Running            0          19d     10.0.32.129    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     etcd-k8s-master01                                       1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     kube-apiserver-k8s-master01                             1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     kube-controller-manager-k8s-master01                    1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     kube-proxy-2mnpm                                        1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     kube-proxy-s8gsb                                        1/1     Running            0          19d     192.168.0.1    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     kube-scheduler-k8s-master01                             1/1     Running            0          19d     192.168.0.2    k8s-master01   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-system     tiller-deploy-fd6cbd9fb-f45zw                           1/1     Running            0          19d     10.0.85.195    k8s-node01     &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;k8s-get-svc
+NAMESPACE       NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;S&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                  AGE
+default         kubernetes           ClusterIP      10.96.0.1        &amp;lt;none&amp;gt;        443/TCP                  19d
+default         phpmyadmin           ClusterIP      10.101.237.116   &amp;lt;none&amp;gt;        80/TCP                   2d6h
+kube-system     kube-dns             ClusterIP      10.96.0.10       &amp;lt;none&amp;gt;        53/UDP,53/TCP,9153/TCP   19d
+kube-system     tiller-deploy        ClusterIP      10.99.173.103    &amp;lt;none&amp;gt;        44134/TCP                19d&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name></name></author><summary type="html">Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below.</summary></entry><entry><title type="html">How to install privacyidea</title><link href="/jekyll/update/2020/09/28/privacyidea.html" rel="alternate" type="text/html" title="How to install privacyidea" /><published>2020-09-28T14:09:03+07:00</published><updated>2020-09-28T14:09:03+07:00</updated><id>/jekyll/update/2020/09/28/privacyidea</id><content type="html" xml:base="/jekyll/update/2020/09/28/privacyidea.html">&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;### Install server&lt;/span&gt;
 docker volume create &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; privacyidea_config

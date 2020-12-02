@@ -7,15 +7,15 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Configure your Kubernetes cluster" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE" />
-<meta property="og:description" content="TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE" />
+<meta name="description" content="Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below." />
+<meta property="og:description" content="Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below." />
 <link rel="canonical" href="/jekyll/update/2020/12/02/k8s-config.html" />
 <meta property="og:url" content="/jekyll/update/2020/12/02/k8s-config.html" />
 <meta property="og:site_name" content="HoloSix" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-12-02T14:09:03+07:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll/update/2020/12/02/k8s-config.html"},"url":"/jekyll/update/2020/12/02/k8s-config.html","description":"TL;DR apiVersion: v1 clusters: - cluster: insecure-skip-tls-verify: true server: https://your_k8s_uri name: k8s_cluster contexts: - context: cluster: k8s_cluster user: k8s_user name: k8s_cluster current-context: &quot;k8s_cluster&quot; kind: Config preferences: {} users: - name: k8s_user user: token: TOKEN_CODE","headline":"Configure your Kubernetes cluster","dateModified":"2020-12-02T14:09:03+07:00","datePublished":"2020-12-02T14:09:03+07:00","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll/update/2020/12/02/k8s-config.html"},"url":"/jekyll/update/2020/12/02/k8s-config.html","description":"Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below.","headline":"Configure your Kubernetes cluster","dateModified":"2020-12-02T14:09:03+07:00","datePublished":"2020-12-02T14:09:03+07:00","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="HoloSix" /></head>
 <body><header class="site-header" role="banner">
@@ -45,7 +45,9 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h1 id="tldr">TL;DR</h1>
+    <p>Create a template k8s cluster configuration file, such as “k8s_cluster.conf” like below.</p>
+
+<h1 id="kubernetes-configuration-template">Kubernetes Configuration Template</h1>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">apiVersion: v1
 clusters:
@@ -65,6 +67,39 @@ preferences: <span class="o">{}</span>
 - name: k8s_user
   user:
     token: TOKEN_CODE</code></pre></figure>
+
+<p>Save it in somewhere. And do not forget to add below configuration path</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">KUBECONFIG</span><span class="o">=</span>/your_path/k8s_cluster.conf</code></pre></figure>
+
+<p>Reload your Terminal, from now you can check it works by typing sample command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>kubectl get pod <span class="nt">--all-namespaces</span></code></pre></figure>
+
+<p>To simplify your command and repeat tediously, you can use my toolbox <a href="https://github.com/holosix/shuriken" target="_blank">Github</a></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>k8s-get-pod
+NAMESPACE       NAME                                                    READY   STATUS             RESTARTS   AGE     IP             NODE           NOMINATED NODE   READINESS GATES
+default         phpmyadmin-74698fb4cf-jdk6s                             1/1     Running            0          2d6h    10.0.85.248    k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system     calico-kube-controllers-bcc6f659f-9q6zb                 1/1     Running            0          19d     10.0.85.194    k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system     calico-node-nml87                                       1/1     Running            0          19d     192.168.0.1    k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system     calico-node-xwjst                                       1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     coredns-f9fd979d6-99rsp                                 1/1     Running            0          19d     10.0.85.193    k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system     coredns-f9fd979d6-jfnlg                                 1/1     Running            0          19d     10.0.32.129    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     etcd-k8s-master01                                       1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     kube-apiserver-k8s-master01                             1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     kube-controller-manager-k8s-master01                    1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     kube-proxy-2mnpm                                        1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     kube-proxy-s8gsb                                        1/1     Running            0          19d     192.168.0.1    k8s-node01     &lt;none&gt;           &lt;none&gt;
+kube-system     kube-scheduler-k8s-master01                             1/1     Running            0          19d     192.168.0.2    k8s-master01   &lt;none&gt;           &lt;none&gt;
+kube-system     tiller-deploy-fd6cbd9fb-f45zw                           1/1     Running            0          19d     10.0.85.195    k8s-node01     &lt;none&gt;           &lt;none&gt;</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>k8s-get-svc
+NAMESPACE       NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                  AGE
+default         kubernetes           ClusterIP      10.96.0.1        &lt;none&gt;        443/TCP                  19d
+default         phpmyadmin           ClusterIP      10.101.237.116   &lt;none&gt;        80/TCP                   2d6h
+kube-system     kube-dns             ClusterIP      10.96.0.10       &lt;none&gt;        53/UDP,53/TCP,9153/TCP   19d
+kube-system     tiller-deploy        ClusterIP      10.99.173.103    &lt;none&gt;        44134/TCP                19d</code></pre></figure>
 
 
   </div><a class="u-url" href="/jekyll/update/2020/12/02/k8s-config.html" hidden></a>
